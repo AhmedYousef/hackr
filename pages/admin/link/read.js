@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import InfiniteScroll from 'react-infinite-scroller';
-import Link from 'next/Link';
+import Link from 'next/link';
 import withAdmin from '../../withAdmin';
 import Layout from '../../../components/Layout';
 

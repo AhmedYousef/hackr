@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '../../../components/Layout';
 import withAdmin from '../../withAdmin';
-import Link from 'next/Link';
+import Link from 'next/link';
 
 const API = process.env.NEXT_PUBLIC_API;
 

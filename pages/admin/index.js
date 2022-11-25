@@ -1,6 +1,6 @@
 import Layout from '../../components/Layout';
 import withAdmin from '../withAdmin';
-import Link from 'next/Link';
+import Link from 'next/link';
 
 const AdminPage = ({ user }) => (
   <Layout>
