@@ -1,0 +1,13 @@
+#nprogress .bar {
+  height: 4px !important;
+  background: #72ffff !important;
+}
+
+.nav a:hover {
+  border-radius: 0px;
+}
+
+a {
+  text-decoration: none !important;
+}
+

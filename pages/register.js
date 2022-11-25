@@ -1,0 +1,156 @@
+import { useState, useEffect } from 'react';
+import Layout from '../components/Layout';
+import Router from 'next/router';
+import axios from 'axios';
+import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
+import { isAuth } from '../helpers/auth';
+
+const API = process.env.NEXT_PUBLIC_API;
+
+const Register = () => {
+  const [state, setState] = useState({
+    name: 'ahmedyousef',
+    email: 'ahmedyousefx1@gmail.com',
+    password: 'joetest',
+    error: '',
+    success: '',
+    buttonText: 'Register',
+    loadedCategories: [],
+    categories: [],
+  });
+
+  const { name, email, password, error, success, buttonText, loadedCategories, categories } = state;
+
+  useEffect(() => {
+    isAuth() && Router.push('/');
+  }, []);
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    const response = await axios.get(`${API}/categories`);
+    setState({ ...state, loadedCategories: response.data });
+  };
+
+  const handleToggle = (categoryId) => () => {
+    // return the first index or -1
+    const clickedCategory = categories.indexOf(categoryId);
+    const all = [...categories];
+
+    if (clickedCategory === -1) {
+      all.push(categoryId);
+    } else {
+      all.splice(clickedCategory, 1);
+    }
+
+    setState({ ...state, categories: all, success: '', error: '' });
+  };
+
+  const showCategories = () => {
+    return (
+      loadedCategories &&
+      loadedCategories.map((c, i) => (
+        <li className="list-unstyled" key={c._id}>
+          <input type="checkbox" onChange={handleToggle(c._id)} className="mr-2" />
+          <label className="form-check-label">{c.name}</label>
+        </li>
+      ))
+    );
+  };
+
+  const handleChange = (fieldName) => (e) => {
+    setState({ ...state, [fieldName]: e.target.value, error: '', success: '', buttonText: 'Register' });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.table({
+      name,
+      email,
+      password,
+      categories,
+    });
+    setState({ ...state, buttonText: 'Registering' });
+    try {
+      const response = await axios.post(`${API}/register`, {
+        name,
+        email,
+        password,
+        categories,
+      });
+
+      setState({
+        ...state,
+        name: '',
+        email: '',
+        password: '',
+        buttonText: 'Submitted',
+        success: response.data.message,
+      });
+    } catch (error) {
+      setState({
+        ...state,
+        buttonText: 'Register',
+        error: error.response.data.error,
+      });
+    }
+  };
+
+  const registerFrom = () => (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <input
+          required
+          value={name}
+          onChange={handleChange('name')}
+          type="text"
+          className="form-control"
+          placeholder="Type your name"
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          required
+          value={email}
+          onChange={handleChange('email')}
+          type="email"
+          className="form-control"
+          placeholder="Type your Email"
+        />
+      </div>
+      <div className="mb-3">
+        <input
+          required
+          value={password}
+          onChange={handleChange('password')}
+          type="password"
+          className="form-control"
+          placeholder="Type your password"
+        />
+      </div>
+      <div className="form-group">
+        <label className="text-muted ml-4">Category</label>
+        <ul style={{ maxHeight: '100px', overflowY: 'auto' }}>{showCategories()}</ul>
+      </div>
+      <div className="mb-3">
+        <button className="btn btn-outline-primary">{buttonText}</button>
+      </div>
+    </form>
+  );
+
+  return (
+    <Layout>
+      <div className="col-md-6 offset-md-3">
+        <h1>Register</h1>
+        <br />
+        {success && showSuccessMessage(success)}
+        {error && showErrorMessage(error)}
+        {registerFrom()}
+      </div>
+    </Layout>
+  );
+};
+
+export default Register;
