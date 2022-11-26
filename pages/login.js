@@ -10,8 +10,8 @@ const API = process.env.NEXT_PUBLIC_API;
 
 const Login = () => {
   const [state, setState] = useState({
-    email: 'ahmedyousefx1@gmail.com',
-    password: '123456',
+    email: '',
+    password: '',
     error: '',
     success: '',
     buttonText: 'Login',

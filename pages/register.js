@@ -9,9 +9,9 @@ const API = process.env.NEXT_PUBLIC_API;
 
 const Register = () => {
   const [state, setState] = useState({
-    name: 'ahmedyousef',
-    email: 'ahmedyousefx1@gmail.com',
-    password: 'joetest',
+    name: '',
+    email: '',
+    password: '',
     error: '',
     success: '',
     buttonText: 'Register',

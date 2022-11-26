@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
           Submit a link
         </Link>
       </li>
-      {!user && (
+      {process.browser && !user && (
         <React.Fragment>
           <li className="nav-item">
             <Link href="/login" className="nav-link text-white">
@@ -54,21 +54,21 @@ const Layout = ({ children }) => {
           </li>
         </React.Fragment>
       )}
-      {user && user.role === 'admin' && (
+      {process.browser && user && user.role === 'admin' && (
         <li className="nav-item ml-auto">
           <Link href="/admin" className="nav-link text-white">
             {isAuth().name}
           </Link>
         </li>
       )}
-      {user && user.role === 'subscriber' && (
+      {process.browser && user && user.role === 'subscriber' && (
         <li className="nav-item ml-auto">
           <Link href="/user" className="nav-link text-white">
             {isAuth().name}
           </Link>
         </li>
       )}
-      {user && (
+      {process.browser && user && (
         <li className="nav-item">
           <Link href="/" onClick={logout} className="btn nav-link text-white">
             Logout
